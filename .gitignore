@@ -16,6 +16,7 @@ bin/
 develop-eggs/
 dist/
 downloads/
+include/
 eggs/
 .eggs/
 lib/
