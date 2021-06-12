@@ -7,7 +7,8 @@ class Minesweeper:
     Minesweeper game representation
     """
 
-    def __init__(self, height=8, width=8, mines=8):
+    def __init__(self, height=4, width=4, mines=4):
+        # original config: 8, 8, 8
 
         # Set initial width, height, and number of mines
         self.height = height
@@ -228,7 +229,7 @@ class MinesweeperAI:
                 continue
 
             intersection = sentence_one.cells.intersection(sentence_two.cells)
-            count = sentence_one.count - sentence_two.count
+            count = sentence_one.count  # - sentence_two.count
 
             if intersection:
                 sentence = Sentence(cells=intersection, count=count)
@@ -344,6 +345,12 @@ class MinesweeperAI:
         for row in range(0, self.height - 1):
             for col in range(0, self.width - 1):
                 if (row, col) not in self.moves_made and (row, col) not in self.mines:
+                    # trying to avoid stuff in sentences where count > 1
+                    if self.knowledge:
+                        for sentence in self.knowledge:
+                            if sentence.count > 0:
+                                if (row, col) in sentence.cells:
+                                    continue
                     print(f"Making random move, cell {(row, col)}")
                     return (row, col)
 
